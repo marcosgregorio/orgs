@@ -1,13 +1,27 @@
-import { TextInput } from "react-native";
+import { StyleSheet, TextInput, TextInputProps } from "react-native";
 
-type MyInputProps = TextInput & {
+type MyInputProps = TextInputProps & {
     placeholder: string;
 }
 export const MyInput = ({ placeholder, ...props }: MyInputProps) => {
     return (
         <TextInput
+            style={ styles.input }
             { ...props }
-            value={ placeholder }
+            placeholder={ placeholder }
         />
     )
 }
+
+const styles = StyleSheet.create({
+    input: {
+        width: '100%',
+        borderRadius: 16,
+        elevation: 10,
+        shadowColor: '#000',
+        borderBottomColor: '#c8c8c8',
+        borderTopColor: '#c8c8c8',
+        backgroundColor: '#fff',
+        padding: 10,
+    }
+})

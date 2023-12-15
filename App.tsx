@@ -4,13 +4,20 @@ import React, { useState } from "react";
 import { MyButton } from "./components/MyButton/MyButton";
 import { MyInput } from "./components/MyInput/MyInput";
 
-
 export default function App() {
-    const [text, setText] = useState('Texto');
+    type Task = { description: string }
+    const [taskDescription, setText] = useState('Texto');
+    const [tasks, setTasks] = useState<Task[]>([]);
 
     const changeText = (value: string) => {
         setText(value)
-        console.log(text)
+        console.log(taskDescription)
+    }
+
+    const submitTask = () => {
+        const newTask: Task = { description: taskDescription }
+        setTasks([...tasks, newTask])
+        console.log('Tarefas', tasks)
     }
 
     const onPressButton = () => {
@@ -20,16 +27,22 @@ export default function App() {
     return (
         <View style={ styles.container }>
             <View style={ styles.addTask }>
-                <MyInput
-                    onChangeText={ changeText }
-                    placeholder={ text }
-                />
-                <MyButton
-                    onPress={ onPressButton }
-                    buttonText={ "Teste butuaum" }
-                >
-                    <Image source={ require('./assets/plus.svg') }/>
-                </MyButton>
+                <View style={ styles.inputText }>
+                    <MyInput
+                        onChangeText={ changeText }
+                        onSubmitEditing={ submitTask }
+                        placeholder={ 'OIIIII' }
+                    />
+
+                </View>
+                <View>
+                    <MyButton
+                        onPress={ submitTask }
+                        buttonText={ "Teste butuaum" }
+                    >
+                        <Image source={ require('./assets/plus.png') } style={ styles.imageStyle }/>
+                    </MyButton>
+                </View>
             </View>
             <StatusBar style="auto"/>
         </View>
@@ -38,6 +51,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
     container: {
+        padding: 8,
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
@@ -49,5 +63,13 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         alignSelf: 'flex-end'
+    },
+    imageStyle: {
+        width: 20,
+        height: 20,
+    },
+    inputText: {
+        padding: 10,
+        flex: 1,
     }
 });

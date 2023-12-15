@@ -11,9 +11,6 @@ export const MyButton = ({ buttonText, ...props }: MyButtonProps) => {
             style={ styles.button }
         >
             { props.children }
-            {/*<Text>*/ }
-            {/*    { buttonText }*/ }
-            {/*</Text>*/ }
         </TouchableOpacity>
 
     )
@@ -22,7 +19,6 @@ export const MyButton = ({ buttonText, ...props }: MyButtonProps) => {
 const styles = StyleSheet.create({
     button: {
         borderRadius: 20,
-        // borderBottomRightRadius: 500,
         elevation: 10,
         shadowColor: '#000',
         borderBottomColor: '#c8c8c8',
