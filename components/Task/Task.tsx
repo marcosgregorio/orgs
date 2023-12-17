@@ -1,12 +1,19 @@
 import {Image, StyleSheet, Text, View} from "react-native";
-import {MyButton} from "../MyButton/MyButton";
+import {MyButton, MyButtonProps} from "../MyButton/MyButton";
 import React from "react";
 
-export const Task = ({...props}) => {
+type TaskProps = MyButtonProps & {
+    title: string,
+    onEditPress: () => void,
+}
+
+export const Task = ({title, onEditPress, ...props }: TaskProps) => {
     return (
         <View style={styles.item}>
-            <Text style={styles.itemText}> {props.title} </Text>
-            <MyButton>
+            <Text style={styles.itemText}> { title } </Text>
+            <MyButton
+                onPress={onEditPress}
+            >
                 <Image source={ require('../../assets/pencil.png') } style={ styles.imageStyle }/>
             </MyButton>
             <MyButton>

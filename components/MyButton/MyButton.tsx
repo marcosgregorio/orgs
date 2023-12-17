@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from "react-native";
 
-type MyButtonProps = TouchableOpacityProps & {
+export type MyButtonProps = TouchableOpacityProps & {
 }
 
 export const MyButton = ({ ...props }: MyButtonProps) => {
