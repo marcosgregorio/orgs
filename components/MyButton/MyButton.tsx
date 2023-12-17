@@ -18,7 +18,7 @@ export const MyButton = ({ ...props }: MyButtonProps) => {
 const styles = StyleSheet.create({
     button: {
         borderRadius: 20,
-        elevation: 10,
+        elevation: 6,
         shadowColor: '#000',
         borderBottomColor: '#c8c8c8',
         borderTopColor: '#c8c8c8',

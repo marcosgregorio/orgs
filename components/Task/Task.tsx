@@ -5,9 +5,10 @@ import React from "react";
 type TaskProps = MyButtonProps & {
     title: string,
     onEditPress: () => void,
+    onDeletePress: () => void,
 }
 
-export const Task = ({title, onEditPress, ...props }: TaskProps) => {
+export const Task = ({title, onEditPress, onDeletePress }: TaskProps) => {
     return (
         <View style={styles.item}>
             <Text style={styles.itemText}> { title } </Text>
@@ -16,7 +17,9 @@ export const Task = ({title, onEditPress, ...props }: TaskProps) => {
             >
                 <Image source={ require('../../assets/pencil.png') } style={ styles.imageStyle }/>
             </MyButton>
-            <MyButton>
+            <MyButton
+                onPress={onDeletePress}
+            >
                 <Image source={ require('../../assets/close.png') } style={ styles.imageStyle }/>
             </MyButton>
         </View>
@@ -27,17 +30,16 @@ const styles = StyleSheet.create({
     item: {
         flex: 1,
         flexDirection: 'row',
-        marginTop: 8,
         alignItems: 'center',
         gap: 10,
-        padding:8,
+        padding:10,
     },
     itemText: {
         // width: '70%',
         flex: 1,
         borderRadius: 16,
         padding: 10,
-        elevation: 10,
+        elevation: 6,
         shadowColor: '#000',
         borderBottomColor: '#c8c8c8',
         borderTopColor: '#c8c8c8',

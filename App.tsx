@@ -1,5 +1,5 @@
 import {StatusBar} from 'expo-status-bar';
-import {FlatList, Image, SafeAreaView, StyleSheet, View} from 'react-native';
+import {FlatList, Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from "react";
 import {MyButton} from "./components/MyButton/MyButton";
 import {MyInput} from "./components/MyInput/MyInput";
@@ -8,7 +8,8 @@ import {Task} from "./components/Task/Task";
 export type TaskType = { description: string }
 export default function App() {
     const [taskDescription, setText] = useState('');
-    const [tasks, setTaskTypes] = useState<TaskType[]>([]);
+    const [tasks, setTasks] = useState<TaskType[]>([]);
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     const changeText = (value: string) => {
         setText(value)
@@ -16,13 +17,26 @@ export default function App() {
     }
 
     const submitTask = () => {
+        setErrorMessage('');
+        if (taskDescription.trim() === '') {
+            setErrorMessage('* Por favor, adicione algo ao input.');
+            return; // Impedir a adição de tarefa se a descrição estiver vazia
+        }
         const newTaskType: TaskType = {description: taskDescription}
-        setTaskTypes([...tasks, newTaskType])
+        setTasks([...tasks, newTaskType])
         setText('')
         console.log('Tarefas', tasks)
     }
     const handleEditTask = (index: number) => {
         console.log(index)
+    }
+
+    const handleDeleteTask = (index: number) => {
+        setTasks((prevTasks) => {
+            const updatedTasks = [...prevTasks];
+            updatedTasks.splice(index, 1);
+            return updatedTasks;
+        });
     }
 
     return (
@@ -34,12 +48,16 @@ export default function App() {
                         <Task
                             title={item.description}
                             onEditPress={() => handleEditTask(index)}
+                            onDeletePress={() => handleDeleteTask(index)}
                         />
                     )}
                 />
             </View>
             <View style={styles.addTask}>
                 <View style={styles.inputText}>
+                    {errorMessage && (
+                        <Text style={styles.errorMessage}> {errorMessage} </Text>
+                    )}
                     <MyInput
                         onChangeText={changeText}
                         onSubmitEditing={submitTask}
@@ -68,7 +86,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     taskList: {
-        padding: 8,
+        paddingVertical: 32,
     },
     addTask: {
         width: '100%',
@@ -84,5 +102,9 @@ const styles = StyleSheet.create({
     inputText: {
         padding: 10,
         flex: 1,
+    },
+    errorMessage: {
+
+        color: 'red',
     }
 });
