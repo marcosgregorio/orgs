@@ -1,22 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
-import { Image, StyleSheet, View } from 'react-native';
+import {FlatList, Image, SafeAreaView, StyleSheet, View} from 'react-native';
 import React, { useState } from "react";
 import { MyButton } from "./components/MyButton/MyButton";
 import { MyInput } from "./components/MyInput/MyInput";
+import { Task } from "./components/Task/Task";
 
+export type TaskType = { description: string }
 export default function App() {
-    type Task = { description: string }
-    const [taskDescription, setText] = useState('Texto');
-    const [tasks, setTasks] = useState<Task[]>([]);
+    const [taskDescription, setText] = useState('');
+    const [tasks, setTaskTypes] = useState<TaskType[]>([]);
 
     const changeText = (value: string) => {
         setText(value)
         console.log(taskDescription)
     }
 
-    const submitTask = () => {
-        const newTask: Task = { description: taskDescription }
-        setTasks([...tasks, newTask])
+    const submitTaskType = () => {
+        const newTaskType: TaskType = { description: taskDescription }
+        setTaskTypes([...tasks, newTaskType])
         console.log('Tarefas', tasks)
     }
 
@@ -25,27 +26,33 @@ export default function App() {
     }
 
     return (
-        <View style={ styles.container }>
+        <SafeAreaView  style={ styles.container }>
+            <View style={ styles.taskList }>
+                <FlatList
+                    data={ tasks }
+                    renderItem={ ({item}) => <Task title={item.description}/> }
+                    // contentContainerStyle={{ marginVertical: 10 }}
+                />
+            </View>
             <View style={ styles.addTask }>
                 <View style={ styles.inputText }>
                     <MyInput
                         onChangeText={ changeText }
-                        onSubmitEditing={ submitTask }
-                        placeholder={ 'OIIIII' }
+                        onSubmitEditing={ submitTaskType }
+                        placeholder={ 'Digite o nome da tarefa.' }
                     />
 
                 </View>
                 <View>
                     <MyButton
-                        onPress={ submitTask }
-                        buttonText={ "Teste butuaum" }
+                        onPress={ submitTaskType }
                     >
                         <Image source={ require('./assets/plus.png') } style={ styles.imageStyle }/>
                     </MyButton>
                 </View>
             </View>
             <StatusBar style="auto"/>
-        </View>
+        </SafeAreaView>
     );
 }
 
@@ -54,15 +61,16 @@ const styles = StyleSheet.create({
         padding: 8,
         flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
+    },
+    taskList: {
+        padding: 8,
     },
     addTask: {
         width: '100%',
-        justifyContent: 'space-around',
+        position: 'absolute',
+        bottom: 0,
         flexDirection: "row",
         alignItems: "center",
-        alignSelf: 'flex-end'
     },
     imageStyle: {
         width: 20,
