@@ -21,10 +21,6 @@ export default function App() {
         console.log('Tarefas', tasks)
     }
 
-    const onPressButton = () => {
-        console.log("Oiiiiii")
-    }
-
     return (
         <SafeAreaView  style={ styles.container }>
             <View style={ styles.taskList }>

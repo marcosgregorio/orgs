@@ -1,5 +1,4 @@
 import {Image, StyleSheet, Text, View} from "react-native";
-import {TaskType} from "../../App";
 import {MyButton} from "../MyButton/MyButton";
 import React from "react";
 
