@@ -1,24 +1,33 @@
-import {Image, StyleSheet, Text, View} from "react-native";
-import {MyButton, MyButtonProps} from "../MyButton/MyButton";
+import { Image, StyleSheet, Text, TextInput, View } from "react-native";
+import { MyButton, MyButtonProps } from "../MyButton/MyButton";
 import React from "react";
+import { MyInput } from "../MyInput/MyInput";
 
 type TaskProps = MyButtonProps & {
     title: string,
-    onEditPress: () => void,
+    // onEditPress: () => void,
     onDeletePress: () => void,
 }
 
-export const Task = ({title, onEditPress, onDeletePress }: TaskProps) => {
+export const Task = ({ title, onDeletePress }: TaskProps) => {
+    const [isEditing, setIsEditing] = React.useState(false);
+    const inputRef = React.useRef<TextInput | null>(null);
+    React.useEffect(() => {
+        console.log('oioiiiii')
+        if (isEditing) {
+            inputRef.current?.focus()
+        }
+    }, [isEditing])
     return (
-        <View style={styles.item}>
-            <Text style={styles.itemText}> { title } </Text>
+        <View style={ styles.item }>
+            { isEditing ? <MyInput ref={ inputRef }/> : <Text style={ styles.itemText }> { title } </Text> }
             <MyButton
-                onPress={onEditPress}
+                onPress={ () => setIsEditing(prev => !prev) }
             >
                 <Image source={ require('../../assets/pencil.png') } style={ styles.imageStyle }/>
             </MyButton>
             <MyButton
-                onPress={onDeletePress}
+                onPress={ onDeletePress }
             >
                 <Image source={ require('../../assets/close.png') } style={ styles.imageStyle }/>
             </MyButton>
@@ -32,7 +41,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 10,
-        padding:10,
+        padding: 10,
     },
     itemText: {
         // width: '70%',

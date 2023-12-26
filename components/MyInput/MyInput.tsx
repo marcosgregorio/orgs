@@ -1,17 +1,33 @@
 import { StyleSheet, TextInput, TextInputProps } from "react-native";
+import React from "react";
 
-type MyInputProps = TextInputProps & {
-    placeholder: string;
-}
-export const MyInput = ({ placeholder, ...props }: MyInputProps) => {
+/**
+ * const InputIcon = React.forwardRef<unknown, InputIconProps>(({ children }, ref) => {
+ *     const {} = useInputContext();
+ *     return (
+ *         <Box
+ *             ref={ref}
+ *             alignItems={"center"}
+ *             bottom={12}
+ *             height={24}
+ *             justifyContent={"center"}
+ *             left={20}
+ *             position={"absolute"}
+ *             zIndex={2}>
+ *             {children}
+ *         </Box>
+ *     );
+ * });
+ * */
+export const MyInput = React.forwardRef<TextInput, TextInputProps>((props, ref) => {
     return (
         <TextInput
             style={ styles.input }
+            ref={ref}
             { ...props }
-            placeholder={ placeholder }
         />
     )
-}
+})
 
 const styles = StyleSheet.create({
     input: {

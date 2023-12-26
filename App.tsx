@@ -33,9 +33,7 @@ export default function App() {
 
     const handleDeleteTask = (index: number) => {
         setTasks((prevTasks) => {
-            const updatedTasks = [...prevTasks];
-            updatedTasks.splice(index, 1);
-            return updatedTasks;
+            return prevTasks.splice(index, 1);
         });
     }
 
@@ -47,7 +45,7 @@ export default function App() {
                     renderItem={({item, index}) => (
                         <Task
                             title={item.description}
-                            onEditPress={() => handleEditTask(index)}
+                            // onEditPress={() => handleEditTask(index)}
                             onDeletePress={() => handleDeleteTask(index)}
                         />
                     )}
