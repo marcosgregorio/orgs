@@ -13,22 +13,27 @@ export default function App() {
 
     const changeText = (value: string) => {
         setText(value)
-        console.log(taskDescription)
     }
 
     const submitTask = () => {
         setErrorMessage('');
         if (taskDescription.trim() === '') {
             setErrorMessage('* Por favor, adicione algo ao input.');
-            return; // Impedir a adição de tarefa se a descrição estiver vazia
+            return;
         }
         const newTaskType: TaskType = {description: taskDescription}
         setTasks([...tasks, newTaskType])
         setText('')
         console.log('Tarefas', tasks)
     }
-    const handleEditTask = (index: number) => {
-        console.log(index)
+    /**
+     * @todo
+     */
+    const handleEditTask = (index: number, text: string) => {
+        setTasks((prevTasks) => {
+            prevTasks.at(index).description = text
+            return prevTasks;
+        })
     }
 
     const handleDeleteTask = (index: number) => {
@@ -45,7 +50,7 @@ export default function App() {
                     renderItem={({item, index}) => (
                         <Task
                             title={item.description}
-                            // onEditPress={() => handleEditTask(index)}
+                            onEditPress={() => handleEditTask(index, item.description)}
                             onDeletePress={() => handleDeleteTask(index)}
                         />
                     )}

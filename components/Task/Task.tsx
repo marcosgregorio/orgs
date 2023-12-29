@@ -5,32 +5,46 @@ import { MyInput } from "../MyInput/MyInput";
 
 type TaskProps = MyButtonProps & {
     title: string,
-    // onEditPress: () => void,
+    onEditPress: () => void,
     onDeletePress: () => void,
 }
 
-export const Task = ({ title, onDeletePress }: TaskProps) => {
+export const Task = ({ title, onDeletePress, onEditPress }: TaskProps) => {
     const [isEditing, setIsEditing] = React.useState(false);
     const inputRef = React.useRef<TextInput | null>(null);
     React.useEffect(() => {
-        console.log('oioiiiii')
         if (isEditing) {
             inputRef.current?.focus()
         }
     }, [isEditing])
+
     return (
         <View style={ styles.item }>
-            { isEditing ? <MyInput ref={ inputRef }/> : <Text style={ styles.itemText }> { title } </Text> }
+            { isEditing ?
+                <MyInput
+                    style={ styles.itemText }
+                    ref={ inputRef }
+                    onSubmitEditing={ onEditPress }
+                    // onSubmitEditing={ () => {
+                    //     console.log('entreiiiiii')
+                    // setIsEditing(prev => !prev)
+                    // return onEditPress
+                    // onSubmitEditing={ () => setIsEditing(prev => !prev) }
+                />
+                : <Text style={ styles.itemText }> { title } </Text>
+            }
             <MyButton
                 onPress={ () => setIsEditing(prev => !prev) }
             >
                 <Image source={ require('../../assets/pencil.png') } style={ styles.imageStyle }/>
             </MyButton>
-            <MyButton
-                onPress={ onDeletePress }
-            >
-                <Image source={ require('../../assets/close.png') } style={ styles.imageStyle }/>
-            </MyButton>
+            { !isEditing &&
+                <MyButton
+                    onPress={ onDeletePress }
+                >
+                    <Image source={ require('../../assets/close.png') } style={ styles.imageStyle }/>
+                </MyButton>
+            }
         </View>
     )
 }
