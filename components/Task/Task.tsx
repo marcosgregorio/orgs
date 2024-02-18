@@ -5,13 +5,14 @@ import { MyInput } from "../MyInput/MyInput";
 
 type TaskProps = MyButtonProps & {
     title: string,
-    onEditPress: () => void,
+    onEditPress: (newDescription: string) => void,
     onDeletePress: () => void,
 }
 
 export const Task = ({ title, onDeletePress, onEditPress }: TaskProps) => {
     const [isEditing, setIsEditing] = React.useState(false);
     const inputRef = React.useRef<TextInput | null>(null);
+
     React.useEffect(() => {
         if (isEditing) {
             inputRef.current?.focus()
@@ -24,26 +25,25 @@ export const Task = ({ title, onDeletePress, onEditPress }: TaskProps) => {
                 <MyInput
                     style={ styles.itemText }
                     ref={ inputRef }
-                    onSubmitEditing={ onEditPress }
-                    // onSubmitEditing={ () => {
-                    //     console.log('entreiiiiii')
-                    // setIsEditing(prev => !prev)
-                    // return onEditPress
+                    onSubmitEditing={ (event) => {
+                        setIsEditing(prev => !prev)
+                        onEditPress(event.nativeEvent.text);
+                    }}
                     // onSubmitEditing={ () => setIsEditing(prev => !prev) }
                 />
                 : <Text style={ styles.itemText }> { title } </Text>
             }
-            <MyButton
-                onPress={ () => setIsEditing(prev => !prev) }
-            >
-                <Image source={ require('../../assets/pencil.png') } style={ styles.imageStyle }/>
-            </MyButton>
             { !isEditing &&
-                <MyButton
-                    onPress={ onDeletePress }
-                >
-                    <Image source={ require('../../assets/close.png') } style={ styles.imageStyle }/>
-                </MyButton>
+                <View style={styles.buttonsStyle}>
+                    <MyButton onPress={ () => setIsEditing(prev => !prev) } >
+                        <Image source={ require('../../assets/pencil.png') } style={ styles.imageStyle }/>
+                    </MyButton>
+                    <MyButton
+                        onPress={ onDeletePress }
+                    >
+                        <Image source={ require('../../assets/close.png') } style={ styles.imageStyle }/>
+                    </MyButton>
+                </View>
             }
         </View>
     )
@@ -71,5 +71,9 @@ const styles = StyleSheet.create({
     imageStyle: {
         width: 20,
         height: 20,
+    },
+    buttonsStyle: {
+        flexDirection: 'row',
+        gap: 10,
     }
 })

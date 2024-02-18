@@ -24,16 +24,22 @@ export default function App() {
         const newTaskType: TaskType = {description: taskDescription}
         setTasks([...tasks, newTaskType])
         setText('')
-        console.log('Tarefas', tasks)
     }
-    /**
-     * @todo
-     */
-    const handleEditTask = (index: number, text: string) => {
-        setTasks((prevTasks) => {
-            prevTasks.at(index).description = text
-            return prevTasks;
-        })
+    
+    const handleEditTask = (index: number, text: string, newDescription: string) => {
+        setTasks((prevTasks: TaskType[]) => {
+            const updatedTasks = prevTasks.map((task, i) => {
+                //garante que nunca vai ser undefinded
+                if (i === index) {
+                    return {
+                        ...task,
+                        description: newDescription
+                    };
+                }
+                return task;
+            });
+            return updatedTasks;
+        });
     }
 
     const handleDeleteTask = (index: number) => {
@@ -50,7 +56,7 @@ export default function App() {
                     renderItem={({item, index}) => (
                         <Task
                             title={item.description}
-                            onEditPress={() => handleEditTask(index, item.description)}
+                            onEditPress={(newDescription) => handleEditTask(index, item.description, newDescription)}
                             onDeletePress={() => handleDeleteTask(index)}
                         />
                     )}
